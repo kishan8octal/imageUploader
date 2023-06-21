@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +41,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [UploadController::class, 'index'])->name('index');
         Route::get('/create', [UploadController::class, 'create'])->name('create');
         Route::post('/upload', [UploadController::class, 'store'])->name('store');
+    });
+
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
     });
 });
 

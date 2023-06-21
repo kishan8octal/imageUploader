@@ -36,4 +36,11 @@ class Image extends Model
             return asset('images/default.png');
         }
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['category'] ?? null, function ($query, $category) {
+            $query->where('category_id', $category);
+        });
+    }
 }
