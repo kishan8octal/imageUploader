@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
+
     protected $table = 'images';
 
     protected $fillable = [
@@ -15,7 +16,7 @@ class Image extends Model
         'category_id',
         'name',
         'path',
-        'total_downloads'
+        'total_downloads',
     ];
 
     public function user()
@@ -40,8 +41,8 @@ class Image extends Model
     public function downloadCount()
     {
         return $this->update([
-                'total_downloads' => $this->total_downloads + 1
-              ]);
+            'total_downloads' => $this->total_downloads + 1,
+        ]);
     }
 
     public function scopeFilter($query, array $filters)
@@ -49,5 +50,10 @@ class Image extends Model
         $query->when($filters['category'] ?? null, function ($query, $category) {
             $query->where('category_id', $category);
         });
+    }
+
+    public function scopeOfUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
     }
 }

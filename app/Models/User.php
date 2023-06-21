@@ -21,11 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type'
+        'type',
     ];
 
     const CONTRIBUTOR = 1;
-    
+
     const NORMAL_USER = 0;
 
     /**
@@ -47,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function images()
+    {
+        $this->hasMany(Image::class);
+    }
 }

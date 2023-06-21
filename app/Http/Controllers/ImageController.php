@@ -10,13 +10,10 @@ use App\Http\Resources\Image as ResourcesImage;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ImageController extends Controller
 {
-    
-
     public function index(WritableImageDownloadRequest $request)
     {
         $images = Image::latest()->paginate(10);
@@ -25,24 +22,25 @@ class ImageController extends Controller
         return Inertia::render('User/Index', [
             'images' => ResourcesImage::collection($images),
             'filters' => $request->only(['category']),
-            'categories' => ResourcesCategory::collection($categories)
+            'categories' => ResourcesCategory::collection($categories),
         ]);
-    } 
-    
-    public function list(WritableImageUploadRequest $request)
+    }
+
+    public function contributorSpecificList(WritableImageUploadRequest $request)
     {
-        $images = Image::where('user_id',Auth::id())->latest()->paginate(10);
+        $images = Image::ofUser(Auth::id())->latest()->paginate(10);
 
         return Inertia::render('Upload/Index', [
-            'images' => ResourcesImage::collection($images)
+            'images' => ResourcesImage::collection($images),
         ]);
     }
 
     public function create(WritableImageUploadRequest $request)
     {
         $categories = Category::all();
+
         return Inertia::render('Upload/Create', [
-            'categories' => ResourcesCategory::collection($categories)
+            'categories' => ResourcesCategory::collection($categories),
         ]);
 
     }
@@ -60,6 +58,7 @@ class ImageController extends Controller
                 $input['path'] = $fileName;
             }
             Image::create($input);
+
             return redirect()->route('images.index');
 
         } catch (\Exception $e) {
@@ -69,17 +68,9 @@ class ImageController extends Controller
 
     public function download(WritableImageDownloadRequest $request, Image $image)
     {
-        try {
-            DB::transaction();
-            $image_file = storage_path('app/public/images/' . $image->path);
-            $image->downloadCount();
-            return response()->download($image_file);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return ['message' => $e->getMessage(), 'error' => true];
-        }
+        $image_file = storage_path('app/public/images/'.$image->path);
+        $image->downloadCount();
+
+        return response()->download($image_file);
     }
-
-
 }

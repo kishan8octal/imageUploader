@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,7 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
         Route::get('/', [ImageController::class, 'index'])->name('index');
-        Route::get('/list', [ImageController::class, 'list'])->name('list');
+        Route::get('/list', [ImageController::class, 'contributorSpecificList'])->name('list');
         Route::get('/create', [ImageController::class, 'create'])->name('create');
         Route::post('/upload', [ImageController::class, 'store'])->name('store');
         Route::get('/{image}/download', [ImageController::class, 'download'])->name('download');

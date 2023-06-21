@@ -83,6 +83,7 @@
                 <div class="mt-4 flex flex-col gap-3">
                     <RadioButton value="0" name="type" v-model="signUpForm.type" id="normalUser" label="Normal User" />
                     <RadioButton value="1" name="type" v-model="signUpForm.type" id="contributor" label="Contributor" />
+                    <InputError class="mt-2" :message="signUpForm.errors.type"/>
                 </div>
                 <div class="mt-4">
                     <PrimaryButton :class="{ 'opacity-25': signUpForm.processing }" :disabled="signUpForm.processing">

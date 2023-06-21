@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class UserPolicy
 {
     use HandlesAuthorization;
-  
+
     public function access(User $user)
     {
         return $user->where('type', 1)->exists();
