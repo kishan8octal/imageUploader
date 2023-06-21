@@ -12,10 +12,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class UploadController extends Controller
+class ImageController extends Controller
 {
+    
 
-    public function Index(WritableImageUploadRequest $request)
+    public function index(Request $request)
+    {
+        $images = Image::latest()->paginate(10);
+        $categories = Category::all();
+
+        return Inertia::render('User/Index', [
+            'images' => ResourcesImage::collection($images),
+            'filters' => $request->only(['category']),
+            'categories' => ResourcesCategory::collection($categories)
+        ]);
+    } 
+    
+    public function list(Request $request)
     {
         $images = Image::where('user_id',Auth::id())->latest()->paginate(10);
 
@@ -24,8 +37,7 @@ class UploadController extends Controller
         ]);
     }
 
-
-    public function create(WritableImageUploadRequest $request)
+    public function create(Request $request)
     {
         $categories = Category::all();
         return Inertia::render('Upload/Create', [
@@ -53,4 +65,13 @@ class UploadController extends Controller
             return ['message' => $e->getMessage(), 'error' => true];
         }
     }
+
+    public function download(Request $request,Image $image)
+    {
+
+        $image = Image::where('')->first();
+
+    }
+
+
 }

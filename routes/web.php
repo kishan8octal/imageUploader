@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,14 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
-        Route::get('/', [UploadController::class, 'index'])->name('index');
-        Route::get('/create', [UploadController::class, 'create'])->name('create');
-        Route::post('/upload', [UploadController::class, 'store'])->name('store');
-    });
-
-    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/download', [UserController::class, 'download'])->name('download');
+        Route::get('/list', [ImageController::class, 'list'])->name('list');
+        Route::get('/create', [ImageController::class, 'create'])->name('create');
+        Route::post('/upload', [ImageController::class, 'store'])->name('store');
+        Route::get('/{image}/download', [UserController::class, 'download'])->name('download');
     });
 
 });
