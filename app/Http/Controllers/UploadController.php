@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageUploadRequest;
+use App\Http\Requests\WritableImageUploadRequest;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Image as ResourcesImage;
 use App\Models\Category;
@@ -14,7 +15,7 @@ use Inertia\Inertia;
 class UploadController extends Controller
 {
 
-    public function Index(Request $request)
+    public function Index(WritableImageUploadRequest $request)
     {
         $images = Image::where('user_id',Auth::id())->latest()->paginate(10);
 
@@ -24,7 +25,7 @@ class UploadController extends Controller
     }
 
 
-    public function create(Request $request)
+    public function create(WritableImageUploadRequest $request)
     {
         $categories = Category::all();
         return Inertia::render('Upload/Create', [

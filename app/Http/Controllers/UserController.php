@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WritableImageDownloadRequest;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Image as ResourcesImage;
 use App\Models\Category;
@@ -11,7 +12,7 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(WritableImageDownloadRequest $request)
     {
         $images = Image::latest()->paginate(10);
         $categories = Category::all();
@@ -25,7 +26,7 @@ class UserController extends Controller
 
     public function download(Request $request)
     {
-        
+
 
     }
 }
