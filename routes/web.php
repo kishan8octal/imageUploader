@@ -45,7 +45,9 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/download', [UserController::class, 'download'])->name('download');
     });
+
 });
 
 require __DIR__.'/auth.php';

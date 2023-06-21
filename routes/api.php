@@ -20,9 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/upload', [UploadController::class, 'store'])->name('upload');
-Route::get('/images', [UploadController::class, 'index'])->name('index');
-Route::get('/user', [UserController::class, 'index'])->name('index');
 
 
 

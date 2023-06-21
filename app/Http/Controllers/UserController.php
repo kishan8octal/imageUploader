@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function Index(Request $request)
+    public function index(Request $request)
     {
         $images = Image::latest()->paginate(10);
         $categories = Category::all();
@@ -21,5 +21,11 @@ class UserController extends Controller
             'filters' => $request->only(['category']),
             'categories' => ResourcesCategory::collection($categories)
         ]);
+    }
+
+    public function download(Request $request)
+    {
+        
+
     }
 }
