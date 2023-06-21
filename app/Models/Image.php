@@ -17,4 +17,13 @@ class Image extends Model
         'path',
         'total_downloads'
     ];
+
+    protected function getImageUrlAttribute()
+    {
+        if ($this->path) {
+            return asset('storage/images/'.$this->path);
+        } else {
+            return asset('images/default.png');
+        }
+    }
 }

@@ -36,8 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/upload', [UploadController::class, 'create'])->name('report');
-    Route::post('/upload', [UploadController::class, 'upload'])->name('upload');
+    Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
+        Route::get('/', [UploadController::class, 'index'])->name('index');
+        Route::get('/create', [UploadController::class, 'create'])->name('create');
+        Route::post('/upload', [UploadController::class, 'store'])->name('store');
+    });
 });
 
 require __DIR__.'/auth.php';

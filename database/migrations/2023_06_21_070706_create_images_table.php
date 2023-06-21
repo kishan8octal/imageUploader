@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('path');
-            $table->integer('total_downloads');
+            $table->integer('total_downloads')->default(0);
             $table->timestamps();
         });
     }
