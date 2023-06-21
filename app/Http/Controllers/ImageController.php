@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -67,11 +68,18 @@ class ImageController extends Controller
         }
     }
 
-    public function download(Request $request,Image $image)
+    public function download(Request $request, Image $image)
     {
-        $image->downloadCount($image);
-        $image_file = storage_path('app/public/images/'.$image->path);
-        return response()->download($image_file);
+        try {
+            DB::transaction();
+            $image_file = storage_path('app/public/images/' . $image->path);
+            $image->downloadCount($image);
+            return response()->download($image_file);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['message' => $e->getMessage(), 'error' => true];
+        }
     }
 
 

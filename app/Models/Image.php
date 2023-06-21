@@ -39,10 +39,8 @@ class Image extends Model
 
     public function downloadCount()
     {
-        $total_downloads =  $this->total_downloads += 1;
-
         return $this->update([
-                'total_downloads' => $total_downloads,
+                'total_downloads' => $this->total_downloads + 1
               ]);
     }
 
