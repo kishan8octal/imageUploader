@@ -19,6 +19,8 @@ class Image extends JsonResource
             'name' => $this->name,
             'user_name' => $this->user->name,
             'category_name' => $this->category->name,
+            'image_url' => $this->image_url,
+            'total_downloads' => $this->total_downloads,
         ];
     }
 }

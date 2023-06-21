@@ -24,7 +24,7 @@ class ImageUploadRequest extends FormRequest
         return [
             'category_id' => 'required',
             'name' => 'required',
-            'file' => 'required',
+            'path' => 'required',
         ];
     }
 }

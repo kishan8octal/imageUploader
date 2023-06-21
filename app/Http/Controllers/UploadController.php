@@ -16,7 +16,7 @@ class UploadController extends Controller
 
     public function Index(Request $request)
     {
-        $images = Image::where('user_id',Auth::id())->get();
+        $images = Image::where('user_id',Auth::id())->latest()->paginate(10);
 
         return Inertia::render('Upload/Index', [
             'images' => ResourcesImage::collection($images)
@@ -39,8 +39,8 @@ class UploadController extends Controller
             $input = $request->all();
             $input['user_id'] = Auth::id();
 
-            if ($request->hasFile('file')) {
-                $image = $request->file('file');
+            if ($request->hasFile('path')) {
+                $image = $request->file('path');
                 $fileName = time().'.'.$image->getClientOriginalName();
                 $image->storeAs('images', $fileName);
                 $input['path'] = $fileName;
