@@ -24,7 +24,7 @@
 
     const signIn = () => {
         signInForm.post(route('login'), {
-            onFinish: () => form.reset('password'),
+            onFinish: () => signInForm.reset('password'),
         });
     };
 
@@ -38,14 +38,14 @@
 
     const singUp = () => {
         signUpForm.post(route('register'), {
-            onFinish: () => form.reset('password', 'password_confirmation'),
+            onFinish: () => signUpForm.reset('password', 'password_confirmation'),
         });
     };
 </script>
 
 <template>
     <GuestLayout>
-        <Head title="Log in"/>
+        <Head title="Log in Register"/>
         <div class="w-full sm:max-w-md mt-6 px-6 py-4  overflow-hidden">
             <h1 class="my-5 text-2xl bold">Sign Up</h1>
             <form @submit.prevent="singUp">
