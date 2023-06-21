@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageUploadRequest;
+use App\Http\Requests\WritableImageDownloadRequest;
 use App\Http\Requests\WritableImageUploadRequest;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Image as ResourcesImage;
 use App\Models\Category;
 use App\Models\Image;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ImageController extends Controller
 {
     
 
-    public function index(Request $request)
+    public function index(WritableImageDownloadRequest $request)
     {
         $images = Image::latest()->paginate(10);
         $categories = Category::all();
@@ -30,7 +29,7 @@ class ImageController extends Controller
         ]);
     } 
     
-    public function list(Request $request)
+    public function list(WritableImageUploadRequest $request)
     {
         $images = Image::where('user_id',Auth::id())->latest()->paginate(10);
 
@@ -39,7 +38,7 @@ class ImageController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create(WritableImageUploadRequest $request)
     {
         $categories = Category::all();
         return Inertia::render('Upload/Create', [
@@ -68,12 +67,12 @@ class ImageController extends Controller
         }
     }
 
-    public function download(Request $request, Image $image)
+    public function download(WritableImageDownloadRequest $request, Image $image)
     {
         try {
             DB::transaction();
             $image_file = storage_path('app/public/images/' . $image->path);
-            $image->downloadCount($image);
+            $image->downloadCount();
             return response()->download($image_file);
             DB::commit();
         } catch (\Exception $e) {

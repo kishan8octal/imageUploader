@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ImageUploadRequest extends FormRequest
@@ -11,7 +12,7 @@ class ImageUploadRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->type === User::CONTRIBUTOR;
     }
 
     /**

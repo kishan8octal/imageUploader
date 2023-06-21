@@ -24,6 +24,10 @@ class User extends Authenticatable
         'type'
     ];
 
+    const CONTRIBUTOR = 1;
+    
+    const NORMAL_USER = 0;
+
     /**
      * The attributes that should be hidden for serialization.
      *

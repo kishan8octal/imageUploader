@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WritableImageUploadRequest extends FormRequest
@@ -11,7 +12,8 @@ class WritableImageUploadRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('access');
+        return auth()->user()->type === User::CONTRIBUTOR;
+
     }
 
     /**
