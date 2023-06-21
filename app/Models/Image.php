@@ -47,8 +47,8 @@ class Image extends Model
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['category'] ?? null, function ($query, $category) {
-            $query->where('category_id', $category);
+        $query->when($filters['categoryIds'] ?? null, function ($query, $category) {
+            $query->whereIn('category_id', $category);
         });
     }
 

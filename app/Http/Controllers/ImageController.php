@@ -16,12 +16,14 @@ class ImageController extends Controller
 {
     public function index(WritableImageDownloadRequest $request)
     {
-        $images = Image::latest()->paginate(10);
+        $filters = $request->only(['categoryIds','page']);
+        
+        $images = Image::latest()->filter($filters)->paginate(10);
         $categories = Category::all();
-
+        
         return Inertia::render('User/Index', [
             'images' => ResourcesImage::collection($images),
-            'filters' => $request->only(['category']),
+            'filters' => $request->only(['categoryIds','page']),
             'categories' => ResourcesCategory::collection($categories),
         ]);
     }
@@ -59,7 +61,7 @@ class ImageController extends Controller
             }
             Image::create($input);
 
-            return redirect()->route('images.index');
+            return redirect()->route('images.list');
 
         } catch (\Exception $e) {
             return ['message' => $e->getMessage(), 'error' => true];
@@ -68,9 +70,8 @@ class ImageController extends Controller
 
     public function download(WritableImageDownloadRequest $request, Image $image)
     {
-        $image_file = storage_path('app/public/images/'.$image->path);
         $image->downloadCount();
 
-        return response()->download($image_file);
+        return response()->json('Download Successfully.');
     }
 }

@@ -8,8 +8,10 @@
     import { PhotoIcon, UserCircleIcon } from '@heroicons/vue/24/solid';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
+    import { useSnackbar } from 'vue3-snackbar';
 
-
+    const snackbar = useSnackbar();
+    
     const props = defineProps({
         categories: {
             type: Object,
@@ -30,7 +32,10 @@
     const submit = () => {
         form.category_id = form.category_id.id;
         form.post(route('images.store'), {
-            // onFinish: () => form.reset('password', 'password_confirmation'),
+            onFinish: () => snackbar.add({
+                type: 'success',
+                text: 'Image Stored Successfully.',
+            }),
         });
     };
 </script>
