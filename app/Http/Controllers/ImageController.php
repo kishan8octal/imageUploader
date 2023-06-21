@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ImageController extends Controller
@@ -68,9 +69,9 @@ class ImageController extends Controller
 
     public function download(Request $request,Image $image)
     {
-
-        $image = Image::where('')->first();
-
+        $image->downloadCount($image);
+        $image_file = storage_path('app/public/images/'.$image->path);
+        return response()->download($image_file);
     }
 
 
