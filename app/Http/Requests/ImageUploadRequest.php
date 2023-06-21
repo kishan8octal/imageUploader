@@ -11,7 +11,7 @@ class ImageUploadRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class ImageUploadRequest extends FormRequest
         return [
             'category_id' => 'required',
             'name' => 'required',
-            'path' => 'required',
+            'file' => 'required',
         ];
     }
 }

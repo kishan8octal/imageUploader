@@ -18,6 +18,16 @@ class Image extends Model
         'total_downloads'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     protected function getImageUrlAttribute()
     {
         if ($this->path) {

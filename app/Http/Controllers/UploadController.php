@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageUploadRequest;
 use App\Http\Resources\Category as ResourcesCategory;
+use App\Http\Resources\Image as ResourcesImage;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -15,8 +16,11 @@ class UploadController extends Controller
 
     public function Index(Request $request)
     {
+        $images = Image::where('user_id',Auth::id())->get();
 
-
+        return Inertia::render('Upload/Index', [
+            'images' => ResourcesImage::collection($images)
+        ]);
     }
 
 
@@ -24,7 +28,7 @@ class UploadController extends Controller
     {
         $categories = Category::all();
         return Inertia::render('Upload/Create', [
-            'categories' => ResourcesCategory::make($categories)
+            'categories' => ResourcesCategory::collection($categories)
         ]);
 
     }
