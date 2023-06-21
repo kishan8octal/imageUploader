@@ -23,7 +23,7 @@
     });
 
     const signIn = () => {
-        signInForm.post(route('login'), {
+        signInForm.post('/login', {
             onFinish: () => signInForm.reset('password'),
         });
     };

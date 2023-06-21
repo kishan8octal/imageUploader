@@ -85,7 +85,7 @@ const logout = () => {
                 <div class="flex h-16 shrink-0 items-center gap-2 text-white">
                     <img class="h-8 w-8 rounded-full bg-gray-800" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45h4o2Zz779xVIm5pSrxTSwTAKViflqRQXF9NYJpjrxl7u0wgYwZi-usOt_EMM64GH9c&usqp=CAU" alt="" />
                     <span class="sr-only">Your profile</span>
-                    <span aria-hidden="true">{{currentUser.name}}</span>
+                    <span aria-hidden="true">{{currentUser?.name || 'User'}}</span>
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">

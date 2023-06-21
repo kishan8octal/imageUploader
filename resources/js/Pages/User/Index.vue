@@ -3,7 +3,7 @@
 
     import InputLabel from '@/Components/InputLabel.vue';
     import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-    import { Head, Link, router } from '@inertiajs/vue3';
+    import { Head, Link, router, useForm } from '@inertiajs/vue3';
     import Pagination from '@/Components/Pagination.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -13,10 +13,11 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     const snackbar = useSnackbar();
-
+    const form = useForm({
+        id: null,
+    });
     const NormalUser = 0;
     const Contributor = 1;
-    const CurrentUser = User;
 
     const props = defineProps({
         images: {
@@ -31,8 +32,14 @@
             type: Object,
             required: true,
         },
+        user: {
+            type: Object,
+            required: true,
+        },
     });
 
+    const selectedCategories = props.filters?.categoryIds;
+    console.log(selectedCategories);
     const filterCategoryImages = ref([]);
     const isOpenModal = ref(false);
     const downloadImage = ref(null);
@@ -64,13 +71,15 @@
     };
 
     const handleDownloadImage = (imageId) => {
-        axios.get(route('images.download', imageId)).then(res => {
-            snackbar.add({
+        form.get(route('images.download', imageId), {
+            onFinish: () => snackbar.add({
                 type: 'success',
                 text: 'Image Downloaded Successfully.',
-            });
-            isOpenModal.value = false;
+            }),
+            preserveScroll: true,
+            preserveState: true
         });
+        isOpenModal.value = false;
     };
 </script>
 <template>
@@ -81,7 +90,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Upload Image</h2>
         </template>
 
-        <template #sidebar v-if="CurrentUser.type === NormalUser">
+        <template #sidebar v-if="user.type === NormalUser">
             <li>
                 <ul role="list" class="-mx-2 space-y-1 text-white">
                     <Link :href="route('images.index')" class="group flex gap-x-3 pb-3 p-2 text-sm leading-6 font-semibold border-b">
@@ -89,7 +98,7 @@
                         Categories
                     </Link>
                     <div class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold" v-for="category in categories.data">
-                        <input :id="category.id" type="checkbox" :value="category.id" v-model="filterCategoryImages" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"/>
+                        <input :id="category.id" type="checkbox" :value="category.id" v-model="filterCategoryImages" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
                         <InputLabel :value="category.name" :labelFor="category.id" class="text-white cursor-pointer"/>
                     </div>
                 </ul>

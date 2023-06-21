@@ -22,6 +22,7 @@ class ImageController extends Controller
         $categories = Category::all();
         
         return Inertia::render('User/Index', [
+            'user' => Auth::user(),
             'images' => ResourcesImage::collection($images),
             'filters' => $request->only(['categoryIds','page']),
             'categories' => ResourcesCategory::collection($categories),
@@ -72,6 +73,6 @@ class ImageController extends Controller
     {
         $image->downloadCount();
 
-        return response()->json('Download Successfully.');
+        return redirect()->back();
     }
 }
